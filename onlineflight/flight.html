@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Reservation System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: lightblue;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: navy;
+            color: white;
+            padding: 20px;
+        }
+
+        .box {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 8px;
+            width: 80%;
+        }
+
+        button {
+            background-color: navy;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Online Flight Reservation</h1>
+
+<div class="box">
+    <h2>Search Flight</h2>
+
+    <input type="text" id="from" placeholder="From"><br>
+    <input type="text" id="to" placeholder="Destination"><br>
+
+    <input type="date" id="date"><br>
+
+    <select id="flight">
+        <option>Air India</option>
+        <option>IndiGo</option>
+        <option>SpiceJet</option>
+    </select><br>
+
+    <button onclick="searchFlight()">Search Flight</button>
+
+    <p id="result"></p>
+</div>
+
+<div class="box">
+    <h2>Book Ticket</h2>
+
+    <input type="text" id="name" placeholder="Passenger Name"><br>
+    <input type="email" id="email" placeholder="Email"><br>
+
+    <button onclick="bookTicket()">Book Ticket</button>
+
+    <p id="ticket"></p>
+</div>
+
+<div class="box">
+    <h2>My Ticket</h2>
+    <p id="myTicket">No ticket booked.</p>
+
+    <button onclick="cancelTicket()">Cancel Ticket</button>
+</div>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+
+    <button onclick="adminLogin()">Login</button>
+
+    <p id="adminResult"></p>
+</div>
+
+<script>
+    function searchFlight() {
+        let from = document.getElementById("from").value;
+        let to = document.getElementById("to").value;
+        let flight = document.getElementById("flight").value;
+
+        if (from == "" || to == "") {
+            alert("Enter source and destination");
+        } else {
+            document.getElementById("result").innerHTML =
+                "Flight: " + flight + "<br>" +
+                "Route: " + from + " to " + to +
+                "<br>Available Seats: 20";
+        }
+    }
+
+    function bookTicket() {
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+
+        if (name == "" || email == "") {
+            alert("Enter passenger details");
+        } else {
+            let ticket = "Ticket booked for " + name;
+
+            document.getElementById("ticket").innerHTML = ticket;
+            document.getElementById("myTicket").innerHTML = ticket;
+        }
+    }
+
+    function cancelTicket() {
+        document.getElementById("myTicket").innerHTML =
+            "Ticket cancelled successfully.";
+
+        document.getElementById("ticket").innerHTML = "";
+    }
+
+    function adminLogin() {
+        let user = document.getElementById("username").value;
+        let pass = document.getElementById("password").value;
+
+        if (user == "admin" && pass == "1234") {
+            document.getElementById("adminResult").innerHTML =
+                "Admin Login Successful!";
+        } else {
+            document.getElementById("adminResult").innerHTML =
+                "Invalid Username or Password";
+        }
+    }
+</script>
+
+</body>
+</html>
