@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Train Reservation System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #e6f7ff;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: navy;
+            color: white;
+            padding: 20px;
+        }
+
+        .box {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 8px;
+            width: 80%;
+        }
+
+        button {
+            background-color: navy;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Online Train Reservation</h1>
+
+<div class="box">
+    <h2>Search Train</h2>
+
+    <input id="from" placeholder="Origin Station"><br>
+    <input id="to" placeholder="Destination Station"><br>
+    <input type="date" id="date"><br>
+
+    <select id="classType">
+        <option>General</option>
+        <option>Sleeper</option>
+        <option>AC 3 Tier</option>
+        <option>AC 2 Tier</option>
+    </select><br>
+
+    <button onclick="searchTrain()">Search Train</button>
+    <p id="result"></p>
+</div>
+
+<div class="box">
+    <h2>Passenger Login</h2>
+
+    <input id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+
+    <button onclick="login()">Login</button>
+    <p id="loginResult"></p>
+</div>
+
+<div class="box">
+    <h2>Book Ticket</h2>
+
+    <input id="name" placeholder="Passenger Name"><br>
+
+    <button onclick="bookTicket()">Book Ticket</button>
+    <p id="ticket"></p>
+</div>
+
+<div class="box">
+    <h2>Check PNR Status</h2>
+
+    <input id="pnr" placeholder="Enter PNR Number"><br>
+
+    <button onclick="checkPNR()">Check Status</button>
+    <p id="pnrResult"></p>
+</div>
+
+<div class="box">
+    <h2>Cancel Ticket</h2>
+
+    <input id="cancelPNR" placeholder="Enter PNR Number"><br>
+
+    <button onclick="cancelTicket()">Cancel Ticket</button>
+    <p id="cancelResult"></p>
+</div>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    <input id="admin" placeholder="Username"><br>
+    <input type="password" id="adminPass" placeholder="Password"><br>
+
+    <button onclick="adminLogin()">Login</button>
+    <p id="adminResult"></p>
+</div>
+
+<script>
+    let booked = false;
+    let pnrNumber = "";
+
+    function searchTrain() {
+        let from = document.getElementById("from").value;
+        let to = document.getElementById("to").value;
+        let type = document.getElementById("classType").value;
+
+        if (from == "" || to == "") {
+            alert("Enter origin and destination");
+        } else {
+            document.getElementById("result").innerHTML =
+                "Train: Express Train" +
+                "<br>Route: " + from + " to " + to +
+                "<br>Class: " + type +
+                "<br>Available Seats: 25";
+        }
+    }
+
+    function login() {
+        let user = document.getElementById("username").value;
+        let pass = document.getElementById("password").value;
+
+        if (user != "" && pass != "") {
+            document.getElementById("loginResult").innerHTML =
+                "Login Successful!";
+        } else {
+            document.getElementById("loginResult").innerHTML =
+                "Enter username and password.";
+        }
+    }
+
+    function bookTicket() {
+        let name = document.getElementById("name").value;
+
+        if (name == "") {
+            alert("Enter passenger name");
+        } else {
+            booked = true;
+            pnrNumber = "PNR12345";
+
+            document.getElementById("ticket").innerHTML =
+                "Ticket Booked Successfully!" +
+                "<br>Passenger: " + name +
+                "<br>PNR Number: " + pnrNumber +
+                "<br>Status: Confirmed";
+        }
+    }
+
+    function checkPNR() {
+        let pnr = document.getElementById("pnr").value;
+
+        if (booked && pnr == pnrNumber) {
+            document.getElementById("pnrResult").innerHTML =
+                "PNR Status: Confirmed";
+        } else {
+            document.getElementById("pnrResult").innerHTML =
+                "PNR not found.";
+        }
+    }
+
+    function cancelTicket() {
+        let pnr = document.getElementById("cancelPNR").value;
+
+        if (booked && pnr == pnrNumber) {
+            booked = false;
+            document.getElementById("cancelResult").innerHTML =
+                "Ticket cancelled successfully.";
+            document.getElementById("ticket").innerHTML = "";
+        } else {
+            document.getElementById("cancelResult").innerHTML =
+                "Invalid PNR number.";
+        }
+    }
+
+    function adminLogin() {
+        let user = document.getElementById("admin").value;
+        let pass = document.getElementById("adminPass").value;
+
+        if (user == "admin" && pass == "1234") {
+            document.getElementById("adminResult").innerHTML =
+                "Admin Login Successful!" +
+                "<br>Train Reservation Report Generated.";
+        } else {
+            document.getElementById("adminResult").innerHTML =
+                "Invalid admin details.";
+        }
+    }
+</script>
+
+</body>
+</html>

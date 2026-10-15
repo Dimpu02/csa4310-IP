@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Cake Ordering System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: pink;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: darkred;
+            color: white;
+            padding: 20px;
+        }
+
+        .box {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 8px;
+            width: 80%;
+        }
+
+        button {
+            background-color: darkred;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Online Cake Ordering System</h1>
+
+<div class="box">
+    <h2>Search Cake</h2>
+
+    <input type="text" id="search" placeholder="Enter Cake Name"><br>
+
+    <select id="category">
+        <option>Birthday Cake</option>
+        <option>Chocolate Cake</option>
+        <option>Wedding Cake</option>
+        <option>Vanilla Cake</option>
+    </select><br>
+
+    <button onclick="searchCake()">Search Cake</button>
+
+    <p id="result"></p>
+</div>
+
+<div class="box">
+    <h2>Cake Details</h2>
+
+    <p>Chocolate Cake - ₹450</p>
+    <p>Vanilla Cake - ₹350</p>
+    <p>Birthday Cake - ₹500</p>
+
+    <input type="number" id="quantity" placeholder="Enter Quantity" min="1"><br>
+
+    <button onclick="addCart()">Add to Cart</button>
+
+    <p id="cart"></p>
+</div>
+
+<div class="box">
+    <h2>Place Order</h2>
+
+    <input type="text" id="name" placeholder="Customer Name"><br>
+    <input type="text" id="address" placeholder="Delivery Address"><br>
+
+    <select id="payment">
+        <option>Cash on Delivery</option>
+        <option>UPI (Demo)</option>
+        <option>Card (Demo)</option>
+    </select><br>
+
+    <button onclick="placeOrder()">Place Order</button>
+
+    <p id="order"></p>
+</div>
+
+<div class="box">
+    <h2>My Order</h2>
+    <p id="status">No order placed.</p>
+
+    <button onclick="cancelOrder()">Cancel Order</button>
+</div>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+
+    <button onclick="adminLogin()">Login</button>
+
+    <p id="adminResult"></p>
+</div>
+
+<script>
+    let price = 0;
+    let total = 0;
+    let orderPlaced = false;
+
+    function searchCake() {
+        let cake = document.getElementById("search").value;
+        let category = document.getElementById("category").value;
+
+        if (cake == "") {
+            document.getElementById("result").innerHTML =
+                "Please enter cake name.";
+        } else {
+            document.getElementById("result").innerHTML =
+                "Cake: " + cake + "<br>Category: " + category;
+        }
+    }
+
+    function addCart() {
+        let quantity = Number(document.getElementById("quantity").value);
+        let cake = document.getElementById("search").value.toLowerCase();
+
+        if (quantity <= 0) {
+            alert("Enter a valid quantity.");
+            return;
+        }
+
+        if (cake.includes("chocolate")) {
+            price = 450;
+        } else if (cake.includes("vanilla")) {
+            price = 350;
+        } else if (cake.includes("birthday")) {
+            price = 500;
+        } else {
+            alert("Enter Chocolate, Vanilla, or Birthday Cake.");
+            return;
+        }
+
+        total = price * quantity;
+
+        document.getElementById("cart").innerHTML =
+            "Cake: " + cake +
+            "<br>Quantity: " + quantity +
+            "<br>Total Price: ₹" + total;
+    }
+
+    function placeOrder() {
+        let name = document.getElementById("name").value;
+        let address = document.getElementById("address").value;
+
+        if (name == "" || address == "" || total == 0) {
+            alert("Enter details and add a cake to cart.");
+            return;
+        }
+
+        orderPlaced = true;
+
+        document.getElementById("order").innerHTML =
+            "Order placed successfully!";
+
+        document.getElementById("status").innerHTML =
+            "Customer: " + name +
+            "<br>Address: " + address +
+            "<br>Total: ₹" + total +
+            "<br>Status: Order Placed";
+    }
+
+    function cancelOrder() {
+        if (orderPlaced) {
+            orderPlaced = false;
+            total = 0;
+            document.getElementById("status").innerHTML =
+                "Order cancelled successfully.";
+            document.getElementById("order").innerHTML = "";
+        } else {
+            document.getElementById("status").innerHTML =
+                "No active order to cancel.";
+        }
+    }
+
+    function adminLogin() {
+        let user = document.getElementById("username").value;
+        let pass = document.getElementById("password").value;
+
+        if (user == "admin" && pass == "1234") {
+            document.getElementById("adminResult").innerHTML =
+                "Admin Login Successful!";
+        } else {
+            document.getElementById("adminResult").innerHTML =
+                "Invalid Username or Password";
+        }
+    }
+</script>
+
+</body>
+</html>

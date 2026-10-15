@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Library Management System</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        h2 {
+            color: darkgreen;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        input, select, button {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            background-color: darkblue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: lightblue;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Library Management System</h1>
+
+
+<!-- ADMIN LOGIN -->
+
+<section>
+
+<h2>Librarian Admin Login</h2>
+
+<form onsubmit="adminLogin(event)">
+
+    Username:
+    <input type="text" id="adminUsername" required>
+
+    Password:
+    <input type="password" id="adminPassword" required>
+
+    <button type="submit">Login</button>
+
+</form>
+
+<p id="adminMessage"></p>
+
+</section>
+
+
+<!-- ADD BOOK -->
+
+<section>
+
+<h2>Admin - Add Book</h2>
+
+<form onsubmit="addBook(event)">
+
+    Book ID:
+    <input type="text" id="bookId" required>
+
+    Book Name:
+    <input type="text" id="bookName" required>
+
+    Author:
+    <input type="text" id="author" required>
+
+    Category:
+    <input type="text" id="category" required>
+
+    Quantity:
+    <input type="number" id="quantity" required>
+
+    <button type="submit">Add Book</button>
+
+</form>
+
+</section>
+
+
+<!-- AVAILABLE BOOKS -->
+
+<section>
+
+<h2>Available Books</h2>
+
+<table>
+
+<tr>
+
+    <th>Book ID</th>
+    <th>Book Name</th>
+    <th>Author</th>
+    <th>Category</th>
+    <th>Quantity</th>
+    <th>Action</th>
+
+</tr>
+
+<tbody id="bookTable"></tbody>
+
+</table>
+
+</section>
+
+
+<!-- SEARCH BOOK -->
+
+<section>
+
+<h2>Search Book</h2>
+
+<input type="text"
+       id="searchInput"
+       placeholder="Enter Book ID or Book Name">
+
+<button onclick="searchBook()">Search</button>
+
+<p id="searchResult"></p>
+
+</section>
+
+
+<!-- UPDATE BOOK -->
+
+<section>
+
+<h2>Update Book</h2>
+
+<form onsubmit="updateBook(event)">
+
+    Book ID:
+    <input type="text" id="updateBookId" required>
+
+    New Book Name:
+    <input type="text" id="updateBookName" required>
+
+    New Author:
+    <input type="text" id="updateAuthor" required>
+
+    New Quantity:
+    <input type="number" id="updateQuantity" required>
+
+    <button type="submit">Update Book</button>
+
+</form>
+
+</section>
+
+
+<!-- USER REGISTER -->
+
+<section>
+
+<h2>User Registration</h2>
+
+<form onsubmit="registerUser(event)">
+
+    Name:
+    <input type="text" id="userName" required>
+
+    Roll Number:
+    <input type="text" id="userRoll" required>
+
+    Email:
+    <input type="email" id="userEmail" required>
+
+    Password:
+    <input type="password" id="userPassword" required>
+
+    <button type="submit">Register</button>
+
+</form>
+
+<p id="registerMessage"></p>
+
+</section>
+
+
+<!-- USER LOGIN -->
+
+<section>
+
+<h2>User Login</h2>
+
+<form onsubmit="userLogin(event)">
+
+    Roll Number:
+    <input type="text" id="loginRoll" required>
+
+    Password:
+    <input type="password" id="loginPassword" required>
+
+    <button type="submit">Login</button>
+
+</form>
+
+<p id="loginMessage"></p>
+
+</section>
+
+
+<!-- ISSUE BOOK -->
+
+<section>
+
+<h2>Issue Book</h2>
+
+<form onsubmit="issueBook(event)">
+
+    Student Roll Number:
+    <input type="text" id="issueRoll" required>
+
+    Book ID:
+    <input type="text" id="issueBookId" required>
+
+    Issue Date:
+    <input type="date" id="issueDate" required>
+
+    Expected Return Date:
+    <input type="date" id="expectedDate" required>
+
+    <button type="submit">Issue Book</button>
+
+</form>
+
+</section>
+
+
+<!-- BORROW HISTORY -->
+
+<section>
+
+<h2>My Borrow History</h2>
+
+<table>
+
+<tr>
+
+    <th>Roll Number</th>
+    <th>Book ID</th>
+    <th>Issue Date</th>
+    <th>Expected Return Date</th>
+    <th>Status</th>
+
+</tr>
+
+<tbody id="borrowTable"></tbody>
+
+</table>
+
+</section>
+
+
+<!-- RETURN BOOK -->
+
+<section>
+
+<h2>Return Book</h2>
+
+<form onsubmit="returnBook(event)">
+
+    Student Roll Number:
+    <input type="text" id="returnRoll" required>
+
+    Book ID:
+    <input type="text" id="returnBookId" required>
+
+    Return Date:
+    <input type="date" id="returnDate" required>
+
+    <button type="submit">Return Book</button>
+
+</form>
+
+<p id="returnMessage"></p>
+
+</section>
+
+
+<!-- FINE -->
+
+<section>
+
+<h2>Make Fine / Check Fine</h2>
+
+<form onsubmit="makeFine(event)">
+
+    Student Roll Number:
+    <input type="text" id="fineRoll" required>
+
+    Fine Amount:
+    <input type="number" id="fineAmount" required>
+
+    <button type="submit">Add Fine</button>
+
+</form>
+
+<p id="fineMessage"></p>
+
+</section>
+
+
+<!-- STUDY MATERIAL -->
+
+<section>
+
+<h2>Study Material</h2>
+
+<form onsubmit="searchMaterial(event)">
+
+    Year:
+
+    <select id="materialYear">
+
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year">3rd Year</option>
+        <option value="4th Year">4th Year</option>
+
+    </select>
+
+    Semester:
+
+    <select id="materialSemester">
+
+        <option value="Semester 1">Semester 1</option>
+        <option value="Semester 2">Semester 2</option>
+
+    </select>
+
+    <button type="submit">Search Material</button>
+
+</form>
+
+<p id="materialResult"></p>
+
+<button onclick="downloadMaterial()">
+    Download Material
+</button>
+
+</section>
+
+
+<!-- MY PROFILE -->
+
+<section>
+
+<h2>My Profile</h2>
+
+<form onsubmit="showProfile(event)">
+
+    Name:
+    <input type="text" id="profileName" required>
+
+    Roll Number:
+    <input type="text" id="profileRoll" required>
+
+    Email:
+    <input type="email" id="profileEmail" required>
+
+    <button type="submit">View Profile</button>
+
+</form>
+
+<p id="profileResult"></p>
+
+</section>
+
+
+<script>
+
+
+let books = [];
+
+let users = [];
+
+let borrowHistory = [];
+
+
+// ADMIN LOGIN
+
+function adminLogin(event) {
+
+    event.preventDefault();
+
+    let username =
+        document.getElementById("adminUsername").value;
+
+    let password =
+        document.getElementById("adminPassword").value;
+
+    if (username == "admin" && password == "admin123") {
+
+        document.getElementById("adminMessage").innerHTML =
+            "Admin Login Successful!";
+
+    } else {
+
+        document.getElementById("adminMessage").innerHTML =
+            "Invalid Admin Login!";
+
+    }
+
+}
+
+
+// ADD BOOK
+
+function addBook(event) {
+
+    event.preventDefault();
+
+    let book = {
+
+        id: document.getElementById("bookId").value,
+
+        name: document.getElementById("bookName").value,
+
+        author: document.getElementById("author").value,
+
+        category: document.getElementById("category").value,
+
+        quantity: document.getElementById("quantity").value
+
+    };
+
+    books.push(book);
+
+    displayBooks();
+
+    event.target.reset();
+
+    alert("Book Added Successfully!");
+
+}
+
+
+// DISPLAY BOOKS
+
+function displayBooks() {
+
+    let table =
+        document.getElementById("bookTable");
+
+    table.innerHTML = "";
+
+    books.forEach(function(book, index) {
+
+        let row = table.insertRow();
+
+        row.insertCell(0).innerHTML = book.id;
+
+        row.insertCell(1).innerHTML = book.name;
+
+        row.insertCell(2).innerHTML = book.author;
+
+        row.insertCell(3).innerHTML = book.category;
+
+        row.insertCell(4).innerHTML = book.quantity;
+
+        row.insertCell(5).innerHTML =
+            "<button onclick='deleteBook(" +
+            index +
+            ")'>Delete</button>";
+
+    });
+
+}
+
+
+// DELETE BOOK
+
+function deleteBook(index) {
+
+    books.splice(index, 1);
+
+    displayBooks();
+
+    alert("Book Deleted Successfully!");
+
+}
+
+
+// SEARCH BOOK
+
+function searchBook() {
+
+    let search =
+        document.getElementById("searchInput")
+        .value.toLowerCase();
+
+    let foundBook = books.find(function(book) {
+
+        return book.id.toLowerCase() == search ||
+               book.name.toLowerCase() == search;
+
+    });
+
+    if (foundBook) {
+
+        document.getElementById("searchResult").innerHTML =
+            "Book Found: " +
+            foundBook.name +
+            "<br>Author: " +
+            foundBook.author +
+            "<br>Quantity: " +
+            foundBook.quantity;
+
+    } else {
+
+        document.getElementById("searchResult").innerHTML =
+            "Book Not Found.";
+
+    }
+
+}
+
+
+// UPDATE BOOK
+
+function updateBook(event) {
+
+    event.preventDefault();
+
+    let id =
+        document.getElementById("updateBookId").value;
+
+    let book = books.find(function(book) {
+
+        return book.id == id;
+
+    });
+
+    if (book) {
+
+        book.name =
+            document.getElementById("updateBookName").value;
+
+        book.author =
+            document.getElementById("updateAuthor").value;
+
+        book.quantity =
+            document.getElementById("updateQuantity").value;
+
+        displayBooks();
+
+        alert("Book Updated Successfully!");
+
+    } else {
+
+        alert("Book Not Found!");
+
+    }
+
+    event.target.reset();
+
+}
+
+
+// USER REGISTER
+
+function registerUser(event) {
+
+    event.preventDefault();
+
+    let user = {
+
+        name:
+            document.getElementById("userName").value,
+
+        roll:
+            document.getElementById("userRoll").value,
+
+        email:
+            document.getElementById("userEmail").value,
+
+        password:
+            document.getElementById("userPassword").value
+
+    };
+
+    users.push(user);
+
+    document.getElementById("registerMessage").innerHTML =
+        "User Registered Successfully!";
+
+    event.target.reset();
+
+}
+
+
+// USER LOGIN
+
+function userLogin(event) {
+
+    event.preventDefault();
+
+    let roll =
+        document.getElementById("loginRoll").value;
+
+    let password =
+        document.getElementById("loginPassword").value;
+
+    let user = users.find(function(user) {
+
+        return user.roll == roll &&
+               user.password == password;
+
+    });
+
+    if (user) {
+
+        document.getElementById("loginMessage").innerHTML =
+            "User Login Successful!";
+
+    } else {
+
+        document.getElementById("loginMessage").innerHTML =
+            "Invalid Login Details!";
+
+    }
+
+}
+
+
+// ISSUE BOOK
+
+function issueBook(event) {
+
+    event.preventDefault();
+
+    let borrow = {
+
+        roll:
+            document.getElementById("issueRoll").value,
+
+        bookId:
+            document.getElementById("issueBookId").value,
+
+        issueDate:
+            document.getElementById("issueDate").value,
+
+        expectedDate:
+            document.getElementById("expectedDate").value,
+
+        status: "Issued"
+
+    };
+
+    borrowHistory.push(borrow);
+
+    displayBorrowHistory();
+
+    event.target.reset();
+
+    alert("Book Issued Successfully!");
+
+}
+
+
+
+function displayBorrowHistory() {
+
+    let table =
+        document.getElementById("borrowTable");
+
+    table.innerHTML = "";
+
+    borrowHistory.forEach(function(borrow) {
+
+        let row = table.insertRow();
+
+        row.insertCell(0).innerHTML =
+            borrow.roll;
+
+        row.insertCell(1).innerHTML =
+            borrow.bookId;
+
+        row.insertCell(2).innerHTML =
+            borrow.issueDate;
+
+        row.insertCell(3).innerHTML =
+            borrow.expectedDate;
+
+        row.insertCell(4).innerHTML =
+            borrow.status;
+
+    });
+
+}
+
+
+
+function returnBook(event) {
+
+    event.preventDefault();
+
+    let roll =
+        document.getElementById("returnRoll").value;
+
+    let bookId =
+        document.getElementById("returnBookId").value;
+
+    let record = borrowHistory.find(function(borrow) {
+
+        return borrow.roll == roll &&
+               borrow.bookId == bookId;
+
+    });
+
+    if (record) {
+
+        record.status = "Returned";
+
+        displayBorrowHistory();
+
+        document.getElementById("returnMessage").innerHTML =
+            "Book Returned Successfully!";
+
+    } else {
+
+        document.getElementById("returnMessage").innerHTML =
+            "Borrow Record Not Found.";
+
+    }
+
+    event.target.reset();
+
+}
+
+
+
+function makeFine(event) {
+
+    event.preventDefault();
+
+    let roll =
+        document.getElementById("fineRoll").value;
+
+    let amount =
+        document.getElementById("fineAmount").value;
+
+    document.getElementById("fineMessage").innerHTML =
+        "Fine for Roll Number " +
+        roll +
+        " is Rs." +
+        amount;
+
+    event.target.reset();
+
+}
+
+
+
+function searchMaterial(event) {
+
+    event.preventDefault();
+
+    let year =
+        document.getElementById("materialYear").value;
+
+    let semester =
+        document.getElementById("materialSemester").value;
+
+    document.getElementById("materialResult").innerHTML =
+        "Study Material for " +
+        year +
+        " - " +
+        semester +
+        " is available.";
+
+}
+
+
+
+function downloadMaterial() {
+
+    let material =
+        "Library Study Material\n" +
+        "Year: 1st Year\n" +
+        "Semester: 1\n" +
+        "Subject: Computer Science";
+
+    let blob =
+        new Blob([material],
+        {type: "text/plain"});
+
+    let link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        "Study_Material.txt";
+
+    link.click();
+
+}
+
+
+
+function showProfile(event) {
+
+    event.preventDefault();
+
+    let name =
+        document.getElementById("profileName").value;
+
+    let roll =
+        document.getElementById("profileRoll").value;
+
+    let email =
+        document.getElementById("profileEmail").value;
+
+    document.getElementById("profileResult").innerHTML =
+        "Name: " + name +
+        "<br>Roll Number: " + roll +
+        "<br>Email: " + email;
+
+}
+
+</script>
+
+</body>
+</html>
